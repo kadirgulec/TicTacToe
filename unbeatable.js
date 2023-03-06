@@ -1,0 +1,114 @@
+var origBoard; 
+const huPlayer = 'O';
+const aiPlayer = 'X';
+const winCombos = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [6,4,2]
+]
+
+const cells = document.querySelectorAll('.cell'); //css classi cell olan bütün hücrelerin oldugu bir const
+startGame();
+
+
+function startGame(){ //oyunu baslatmak icin
+    document.querySelector('.endgame').style.display="none"; //oyun sonu cikan pencereyi sifirlar
+    origBoard = Array.from(Array(9).keys()); //0 ve 9 arasindaki sayilardan bir array olustururu
+    for (var i = 0 ; i < cells.length; i++){ // hücrelerin icini temizleyecek döngü
+        cells[i].innerText = '';
+        cells[i].style.removeProperty('background-color'); //hücrelerin arka plan rengini sifirlar
+        cells[i].addEventListener('click', turnClick, false); //hücreye tiklandiginda turnClick fonksiyonunu calistiri
+    }
+}
+
+function turnClick(square) { //hangi hücreye tiklandiysa onun id'sini ve oyuncuyu turn fonksiyonuna gönderir
+    if (typeof origBoard[square.target.id] == 'number'){
+        turn(square.target.id, huPlayer);
+        if(checkWin(origBoard,huPlayer) == null){
+           if(!checkTie()) turn(bestSpot(), aiPlayer);
+        }
+    }
+ 
+}
+
+function turn(squareId,player){ 
+    origBoard[squareId] = player ; //kazanani bulmak icin Arrayi degistirir
+    document.getElementById(squareId).innerText = player; //ekrana playerin isaretini yansitir
+    let gameWon = checkWin(origBoard, player);
+    if (gameWon) gameOver(gameWon);
+}
+
+function checkWin(board, player) {
+    let plays = board.reduce((a,e,i) =>  
+    (e === player) ? a.concat(i) : a, []);
+    /* yukaridaki reduce aciklamasidir    
+    a (akümülator) en sonda gelen deger 
+    sondaki [] isareti a nin ilk degerini atiyor, yani bos array
+    e boarddaki elementlerin her biri
+     ve i da index
+     formülün yaptigi (e playeri esitse, soru isareti (Conditional (ternary) Operator) if else gibi calisiyor, : oncesi if, : sonrasi else. )
+    */
+
+   let gameWon = null;
+  
+   for (let [index, win] of winCombos.entries() ){
+    if (win.every(elem => plays.indexOf(elem) > -1)){
+        gameWon = {index: index, player:player};
+        break;
+    }
+   }
+   
+   return gameWon;
+}
+
+function declareWinner(who){
+   
+    document.querySelector(".endgame").style.display = "flex";
+    document.querySelector(".endgame").style.justifyContent = "center";
+    document.querySelector(".endgame").style.alignItems = "center";
+    document.querySelector(".endgame .text").innerText= who ;
+}
+
+function gameOver(gameWon){
+    for (let index of winCombos[gameWon.index]){
+        document.getElementById(index).style.backgroundColor= gameWon.player == huPlayer ? "blue" : "red";
+    }
+    for (var i = 0 ; i < cells.length; i++) {
+        cells[i].removeEventListener('click', turnClick, false);
+    }
+    declareWinner(gameWon.player == huPlayer ? "You Win!" : "You Lose!")
+}
+function emptySquares(){
+    return origBoard.filter(s => typeof s == 'number')
+}
+function bestSpot(){
+    var randomnumber=Math.floor((Math.random() * 8));
+    
+    
+    if (emptySquares().length <= randomnumber){
+        
+        randomnumber=Math.floor((Math.random() * emptySquares().length));
+        if(emptySquares().length == 0) return;
+    }  
+    
+    return emptySquares()[randomnumber];
+    
+    
+}
+
+function checkTie(){
+    if (emptySquares().length == 0){
+        for(var i = 0; i <cells.length; i++){
+            cells[i].style.backgroundColor = 'green';
+            cells[i].removeEventListener('click', turnClick,false);
+        }
+        declareWinner("Tie Game!");
+        return true;
+    }
+    return false;
+}
