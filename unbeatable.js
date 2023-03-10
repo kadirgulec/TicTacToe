@@ -29,7 +29,7 @@ function startGame(){ //oyunu baslatmak icin
 function turnClick(square) { //hangi hücreye tiklandiysa onun id'sini ve oyuncuyu turn fonksiyonuna gönderir
     if (typeof origBoard[square.target.id] == 'number'){
         turn(square.target.id, huPlayer);
-        if(checkWin(origBoard,huPlayer) == null){
+        if(checkWin(origBoard,huPlayer) == null){ 
            if(!checkTie()) turn(bestSpot(), aiPlayer);
         }
     }
@@ -112,7 +112,7 @@ function minimax(newBoard, player) {
     } else if (checkWin(newBoard, aiPlayer)){
         return{score:10}
     } else if (availSpots.length === 0) {
-        return {score:0};
+        return {score: 0};
     }
     
     var moves = [];
