@@ -24,6 +24,15 @@ function unbeatable(){
     head.appendChild(script);
 }
 
+function realunbeatable(){
+    document.querySelector(".sGButtons").style.display = "none";
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "realunbeatable.js";
+    head.appendChild(script);
+}
+
 /* document.getElementsByTagName("body")[0].innerHTML = `
 <table>
     <tr>
