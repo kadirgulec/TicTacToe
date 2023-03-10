@@ -15,6 +15,14 @@ function twoPlayers(){
     script.src = "twoPlayer.js";
     head.appendChild(script);
 }
+function unbeatable(){
+    document.querySelector(".sGButtons").style.display = "none";
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "unbeatable.js";
+    head.appendChild(script);
+}
 
 /* document.getElementsByTagName("body")[0].innerHTML = `
 <table>
