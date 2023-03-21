@@ -87,6 +87,7 @@ function emptySquares() {
     return origBoard.filter(s => typeof s == 'number')
 }
 function bestSpot() {
+    console.log(minimax(origBoard,aiPlayer));
     return minimax(origBoard, aiPlayer).index;
 
 
@@ -153,5 +154,6 @@ function minimax(newBoard, player) {
 
         }
     }
+    
     return moves[bestMove];
 } 
