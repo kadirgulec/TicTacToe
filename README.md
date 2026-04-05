@@ -22,7 +22,7 @@ The AI utilizes the Minimax strategy to determine its next move:
 ### Installation
 Clone the repository:
 ```bash
-git clone [https://github.com/kadirgulec/TicTacToe.git](https://github.com/kadirgulec/TicTacToe.git)
+git clone https://github.com/kadirgulec/TicTacToe.git
 ```
 
 Navigate to the project folder and open index.html file.
